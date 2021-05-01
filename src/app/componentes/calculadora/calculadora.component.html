@@ -2,13 +2,16 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-alinig-center">
-        
         <div>
           <!-- <ion-input placeholder="Ingrese un input" [(ngModel)]="cadena" value="test3"></ion-input> -->
         </div>
-        <div *ngIf="cadena != undefined ">
-          <app-display prueba1="{{cadena}}"></app-display>
+
+        <div *ngIf="input != undefined">
+
+          <app-display resultado={{this.resultado}} input={{this.input}}></app-display><!---------------DISPLAY----------------->
+
         </div>
+
         <div *ngFor="let test of numberGroups" >
           <ion-button *ngFor="let test2 of test" class="calc-button" (click)="func(test2)">{{test2}}</ion-button>
         </div>
@@ -16,7 +19,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
-
-

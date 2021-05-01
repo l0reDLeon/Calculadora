@@ -9,8 +9,7 @@ import { DisplayComponent } from '../display/display.component';
 export class CalculadoraComponent implements OnInit {
 
   constructor() { }
-  noc: DisplayComponent = new DisplayComponent;
-  test3:string = "";
+  display: DisplayComponent = new DisplayComponent;
 
   regex1:string;
   regex2:string;
@@ -18,18 +17,13 @@ export class CalculadoraComponent implements OnInit {
   switch:boolean=true;
   input:string="";
   ready = false;
+  resultado:string;
 
   ngOnInit() {
-    this.test3 = "";
     this.input="";
+    this.regex1="";
+    this.regex2="";
   }
-  cadena: string;
-  //  isOk = false;
- 
-  //  display1(test: string){
-  //    this.isOk = true;
-  //    this.test3 +=test;
-  //  }
 
   numberGroups=[
     [7,8,9,'x'],
@@ -40,18 +34,18 @@ export class CalculadoraComponent implements OnInit {
 
   func(letra:string){
     this.input+=letra;
-    
-    if(this.switch){
-      this.regex1+=letra;
-    }
-    else{
-      if(!(letra =='x' || letra =='+' || letra =='-' || letra =='/' || letra =='c' || letra =='=')){
-        this.regex2+=letra;
+    if(letra != 'x' && letra != '+' && letra != '-' && letra != '/' && letra != 'c' && letra != '='){
+      if(this.switch){
+        this.regex1=this.regex1+letra;
       }
       else{
-        this.switch= !this.switch;
+        this.regex2=this.regex2+letra;
       }
     }
+    else{
+      this.switch= !this.switch;
+    }
+
     if(letra=='c'){
       this.regex1="";
       this.regex2="";
@@ -59,39 +53,46 @@ export class CalculadoraComponent implements OnInit {
       this.send("c");
     }
 
-    console.log(this.cadena);
     console.log(this.input);
+    console.log("regex1= "+this.regex1);
+    console.log("regex2= "+this.regex2);
+
     if(letra === '='){
       this.analyze(this.input);
+      console.log(this.input);
+      this.input="";
+
+      this.switch=true;
     }
   }
 
   analyze(cadena){
     let i=0;
     let operador:string;
-    for(i;i<this.test3.length;i++){
-      switch(this.test3[i]){
-        case 'x': 
+    for(i;i<cadena.length;i++){
+      switch(cadena[i]){
+        case 'x':
           operador='x';
         break;
 
-        case '-': 
+        case '-':
           operador='-';
         break;
 
-        case '+': 
+        case '+':
           operador="+";
-        break;  
+        break;
 
-        case '/': 
+        case '/':
           operador="/";
         break;
 
         case 'c':
           operador="c";
+          this.input="";
         break;
 
-        case '=':   
+        case '=':
           this.send(operador);
         break;
       }
@@ -99,12 +100,53 @@ export class CalculadoraComponent implements OnInit {
   }
 
   clear(){
+    this.input="";
     this.regex1="";
     this.regex2="";
   }
 
   send(operador:string){
+    this.display1(this.regex1,operador,this.regex2);
+    this.clear();
     this.ready = true;
   }
 
+  display1(sentence1:string,op:string,sentence2:string){
+    let result=this.calculate(sentence1,op,sentence2);
+    this.resultado=result.toString();
+  }
+
+  calculate(sentence1:string,op:string,sentence2:string){
+    console.log("s1: "+sentence1);
+    console.log("s2: "+sentence2);
+    let p1=parseInt(sentence1);
+    let p2=parseInt(sentence2);
+    console.log("p1: "+p1);
+    console.log("p2: "+p2);
+    let result:number;
+
+    switch(op){
+      case 'x':
+        result=p1*p2;
+      break;
+
+      case '-':
+        result=p1-p2;
+      break;
+
+      case '+':
+        result=p1+p2;
+      break;
+
+      case '/':
+        result=p1/p2;
+      break;
+
+      case 'c':
+        result=0;
+      break;
+    }
+    console.log("= "+result);
+    return result;
+  }
 }
