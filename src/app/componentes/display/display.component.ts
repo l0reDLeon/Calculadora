@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { CalculadoraComponent } from '../calculadora/calculadora.component';
 
 @Component({
   selector: 'app-display',
@@ -7,8 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplayComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    this.prueba();
+  }
 
-  ngOnInit() {}
+  @Input() prueba1: string;
+
+  calcu: CalculadoraComponent = <CalculadoraComponent>{};
+
+  ngOnInit() {
+    this.test3="";
+  }
+
+  test3 = "";
+  isOk = false;
+  
+  display1(test: string){
+    this.isOk = true;
+    this.test3 +=test;
+    console.log(test);
+  }
+
+  prueba(){
+    console.log(this.prueba1);
+  }
 
 }
